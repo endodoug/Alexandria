@@ -1,9 +1,7 @@
 //
-//  SKProduct+Extensions.swift
+//  NSObject+Customizable.swift
 //
-//  Created by John C. "Hsoi" Daub (john.daub@ovenbits.com, hsoi@hsoienterprises.com) on 2015-03-05.
-//
-//  Extensions to the SKProduct class.
+//  Created by Jonathan Landon on 1/19/16.
 //
 // The MIT License (MIT)
 //
@@ -27,24 +25,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
 import Foundation
-import StoreKit
 
-extension SKProduct {
+/**
+ Describes a protocol to enable objects to be customized, typically chained at initialization time.
+ 
+ Inspired by: https://github.com/devxoul/Then
+ */
+public protocol Customizable {}
 
-    /**
-    Returns the product's price, properly localized for display.
+extension Customizable {
     
-    - SeeAlso: Listing 2-3 @ https://developer.apple.com/library/mac/documentation/NetworkingInternet/Conceptual/StoreKitGuide/Chapters/ShowUI.html#//apple_ref/doc/uid/TP40008267-CH3-SW10
-    */
-    public var localizedPrice : String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.formatterBehavior = .behavior10_4
-        numberFormatter.numberStyle = .currency
-        numberFormatter.locale = priceLocale
-        
-        return numberFormatter.string(from: price) ?? ""
-    }
+    /**
+     Set properties on `self` with a closure.
+     
+     Example:
+     ```
+     let label = UILabel(frame: .zero).customize {
+        $0.text = "Text goes here..."
+        $0.textColor = .black
+        $0.sizeToFit()
+        $0.center = view.center
+        $0.add(toSuperview: $0)
+     }
+     ```
 
+     - parameter customize: A closure, performing the customization.
+     
+     - returns: `self`
+     */
+    @discardableResult
+    public func customize(_ customize: (Self) -> Void) -> Self {
+        customize(self)
+        return self
+    }
 }
+
+extension NSObject: Customizable {}

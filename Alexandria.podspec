@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                = "Alexandria"
-  s.version             = "1.1.0"
+  s.version             = "2.1.0"
   s.summary             = "Oven Bits' library of useful iOS Swift extensions."
   s.description         = <<-DESC
     The Oven Bits open source library, Alexandria, is one of the new Wonders of the iOS World.
@@ -33,18 +33,19 @@ Pod::Spec.new do |s|
     LICENSE
   }
   s.author              = {
-    "John Daub" => "john.daub@ovenbits.com",
-    "Jonathan Landon" => "jonathan.landon@ovenbits.com",
-    "Ben Kreeger" => "ben.kreeger@ovenbits.com",
-    "Chris Voss" => "chris.voss@ovenbits.com",
-    "Steven Schobert" => "steven.schobert@ovenbits.com",
-    "Jayson Lane" => "jayson.lane@ovenbits.com",
+    "John Daub" => "hsoi@hsoi.com",
+    "Jonathan Landon" => "jlandon@me.com",
+    "Ben Kreeger" => "ben.kreeger@icloud.com",
+    "Chris Voss" => "chrisvoss@gmail.com",
+    "Steven Schobert" => "spschobert@gmail.com",
+    "Jayson Lane" => "jaysonlane@gmail.com",
     "Claire Knight" => "claire.knight@krider.co.uk",
-    "Alex Corcoran" => "alex.corcoran@ovenbits.com"
+    "Alex Corcoran" => "alex.p.corcoran@gmail.com"
   }
   s.social_media_url    = 'https://twitter.com/ovenbitsmobile'
   s.platform            = :ios, "8.0"
   s.requires_arc        = true
+  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '3.0' }
   s.documentation_url   = 'https://ovenbits.github.io/Alexandria'
   s.source              = { :git => "https://github.com/ovenbits/Alexandria.git", :tag => "v#{s.version}" }
   s.frameworks          = *%w(Foundation UIKit)

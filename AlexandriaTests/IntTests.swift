@@ -1,7 +1,7 @@
 //
-//  DateTests.swift
+//  IntTests.swift
 //
-//  Created by Jonathan Landon on 2/8/16.
+//  Created by hsoi on 6/3/16.
 //
 // The MIT License (MIT)
 //
@@ -27,8 +27,8 @@
 
 import XCTest
 
-class DateTests: XCTestCase {
-
+class IntTests: XCTestCase {
+    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -39,16 +39,20 @@ class DateTests: XCTestCase {
         super.tearDown()
     }
     
-    func testTimeFormatting() {
-        let calendar = Calendar.current
-        
-        let components = DateComponents.init(hour: 9, minute: 41, second: 0)
-        
-        let date = calendar.date(from: components)
-        
-        XCTAssertEqual(date?.time(), "09:41", "Times are not equal")
-        XCTAssertEqual(date?.time(format: .hourMinutePeriod), "09:41 AM", "Times are not equal")
-        XCTAssertEqual(date?.time(format: .hourMinuteSecondMilitary), "09:41:00", "Times are not equal")
-        XCTAssertEqual(date?.time(format: .hourMinuteSecondPeriod), "09:41:00 AM", "Times are not equal")
+
+    func testToAbbreviatedString() {
+        XCTAssertEqual(Int(598).abbreviatedString, "598")
+        XCTAssertEqual(Int(-999).abbreviatedString, "-999")
+        XCTAssertEqual(Int(1000).abbreviatedString, "1K")
+        XCTAssertEqual(Int(-1284).abbreviatedString, "-1.3K")
+        XCTAssertEqual(Int(9940).abbreviatedString, "9.9K")
+        XCTAssertEqual(Int(9980).abbreviatedString, "10K")
+        XCTAssertEqual(Int(39900).abbreviatedString, "39.9K")
+        XCTAssertEqual(Int(99880).abbreviatedString, "99.9K")
+        XCTAssertEqual(Int(399880).abbreviatedString, "0.4M")
+        XCTAssertEqual(Int(999898).abbreviatedString, "1M")
+        XCTAssertEqual(Int(999999).abbreviatedString, "1M")
+        XCTAssertEqual(Int(1456384).abbreviatedString, "1.5M")
+        XCTAssertEqual(Int(12383474).abbreviatedString, "12.4M")
     }
 }

@@ -26,15 +26,35 @@
 // SOFTWARE.
 
 import Foundation
+import CoreGraphics
 
 extension CGFloat {
     /// Generate a random CGFloat bounded by a closed interval range.
-    public static func random(range: ClosedInterval<CGFloat>) -> CGFloat {
-        return CGFloat(arc4random()) / CGFloat(UInt64(UINT32_MAX)) * (range.end - range.start) + range.start
+    public static func random(_ range: ClosedRange<CGFloat>) -> CGFloat {
+        return CGFloat(arc4random()) / CGFloat(UInt64(UINT32_MAX)) * (range.upperBound - range.lowerBound) + range.lowerBound
     }
     
     /// Generate a random CGFloat bounded by a range from min to max.
-    public static func random(min min: CGFloat, max: CGFloat) -> CGFloat {
+    public static func random(min: CGFloat, max: CGFloat) -> CGFloat {
         return random(min...max)
+    }
+    
+    /**
+     Round self to a specified number of decimal places.
+     
+     - parameter places: The number of decimal places by which to round self.
+     - returns: A CGFloat value, rounded to the specified number of decimal places.
+     
+     Examples:
+     ```
+     let val: CGFloat = 12.345678
+     
+     val.rounded(places: 2) // 12.35
+     val.rounded(places: 3) // 12.346
+     ```
+     */
+    public func rounded(places: UInt) -> CGFloat {
+        let multiplier = pow(10, CGFloat(places))
+        return (self * multiplier).rounded() / multiplier
     }
 }

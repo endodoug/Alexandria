@@ -62,10 +62,10 @@ extension Int {
      }
      
      // use
-     let double = number?.toDouble
+     let double = number?.double
      ```
      */
-    public var toDouble: Double {
+    public var double: Double {
         return Double(self)
     }
     
@@ -85,10 +85,10 @@ extension Int {
      }
      
      // use
-     let float = number?.toFloat
+     let float = number?.float
      ```
      */
-    public var toFloat: Float {
+    public var float: Float {
         return Float(self)
     }
     
@@ -108,10 +108,10 @@ extension Int {
      }
      
      // use
-     let cgFloat = number?.toCGFloat
+     let cgFloat = number?.cgFloat
      ```
      */
-    public var toCGFloat: CGFloat {
+    public var cgFloat: CGFloat {
         return CGFloat(self)
     }
     
@@ -131,30 +131,83 @@ extension Int {
      }
      
      // use
-     let string = number?.toString
+     let string = number?.string
      ```
      */
-    public var toString: String {
+    public var string: String {
         return String(self)
     }
+    
+    
+    /**
+     Convert self to an abbreviated String.
+     
+     Examples:
+     ```
+     Value : 598 -> 598
+     Value : -999 -> -999
+     Value : 1000 -> 1K
+     Value : -1284 -> -1.3K
+     Value : 9940 -> 9.9K
+     Value : 9980 -> 10K
+     Value : 39900 -> 39.9K
+     Value : 99880 -> 99.9K
+     Value : 399880 -> 0.4M
+     Value : 999898 -> 1M
+     Value : 999999 -> 1M
+     Value : 1456384 -> 1.5M
+     Value : 12383474 -> 12.4M
+     ```
+     
+     - author: http://stackoverflow.com/a/35504720/1737738
+     */
+    public var abbreviatedString: String {
+        typealias Abbreviation = (threshold: Double, divisor: Double, suffix: String)
+        let abbreviations: [Abbreviation] = [(0, 1, ""),
+                                            (1000.0, 1000.0, "K"),
+                                            (100_000.0, 1_000_000.0, "M"),
+                                            (100_000_000.0, 1_000_000_000.0, "B")]
+        // you can add more !
+        
+        let startValue = Double(abs(self))
+        let abbreviation: Abbreviation = {
+            var prevAbbreviation = abbreviations[0]
+            for tmpAbbreviation in abbreviations where tmpAbbreviation.threshold <= startValue {
+                prevAbbreviation = tmpAbbreviation
+            }
+            return prevAbbreviation
+        }()
+        
+        let numFormatter = NumberFormatter()
+        let value = Double(self) / abbreviation.divisor
+        numFormatter.positiveSuffix = abbreviation.suffix
+        numFormatter.negativeSuffix = abbreviation.suffix
+        numFormatter.allowsFloats = true
+        numFormatter.minimumIntegerDigits = 1
+        numFormatter.minimumFractionDigits = 0
+        numFormatter.maximumFractionDigits = 1
+        
+        return numFormatter.string(from: NSNumber(value: value)) ?? "\(self)"
+    }
+
     
     /**
      Repeat a block `self` times.
      
      - parameter block: The block to execute (includes the current execution index)
      */
-    public func repeatBlock(@noescape block: (Int) throws -> ()) rethrows {
+    public func `repeat`(_ block: (Int) throws -> Void) rethrows {
         guard self > 0 else { return }
         try (1...self).forEach(block)
     }
     
     /// Generate a random Int bounded by a closed interval range.
-    public static func random(range: ClosedInterval<Int>) -> Int {
-        return range.start + Int(arc4random_uniform(UInt32(range.end - range.start + 1)))
+    public static func random(_ range: ClosedRange<Int>) -> Int {
+        return range.lowerBound + Int(arc4random_uniform(UInt32(range.upperBound - range.lowerBound + 1)))
     }
     
     /// Generate a random Int bounded by a range from min to max.
-    public static func random(min min: Int, max: Int) -> Int {
+    public static func random(min: Int, max: Int) -> Int {
         return random(min...max)
     }
 }

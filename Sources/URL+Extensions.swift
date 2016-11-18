@@ -1,9 +1,7 @@
 //
-//  SKProduct+Extensions.swift
+//  URL+Extensions.swift
 //
-//  Created by John C. "Hsoi" Daub (john.daub@ovenbits.com, hsoi@hsoienterprises.com) on 2015-03-05.
-//
-//  Extensions to the SKProduct class.
+//  Created by Jonathan Landon on 10/25/16.
 //
 // The MIT License (MIT)
 //
@@ -27,24 +25,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
 import Foundation
-import StoreKit
 
-extension SKProduct {
-
-    /**
-    Returns the product's price, properly localized for display.
-    
-    - SeeAlso: Listing 2-3 @ https://developer.apple.com/library/mac/documentation/NetworkingInternet/Conceptual/StoreKitGuide/Chapters/ShowUI.html#//apple_ref/doc/uid/TP40008267-CH3-SW10
-    */
-    public var localizedPrice : String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.formatterBehavior = .behavior10_4
-        numberFormatter.numberStyle = .currency
-        numberFormatter.locale = priceLocale
-        
-        return numberFormatter.string(from: price) ?? ""
+extension URL: ExpressibleByStringLiteral {
+    /// Creates a URL initialized to the given string value.
+    public init(stringLiteral value: StringLiteralType) {
+        guard let url = URL(string: value) else { fatalError("Could not create URL from: \(value)") }
+        self = url
     }
+    
+    /// Creates a URL initialized to the given value.
+    public init(extendedGraphemeClusterLiteral value: StringLiteralType) {
+        guard let url = URL(string: value) else { fatalError("Could not create URL from: \(value)") }
+        self = url
+    }
+    
+    /// Creates a URL initialized to the given value.
+    public init(unicodeScalarLiteral value: StringLiteralType) {
+        guard let url = URL(string: value) else { fatalError("Could not create URL from: \(value)") }
+        self = url
+    }
+}
 
+/**
+ Append a path component to a url. Equivalent to `lhs.appendingPathComponent(rhs)`.
+ 
+ - parameter lhs: The url.
+ - parameter rhs: The path component to append.
+ - returns: The original url with the appended path component.
+ */
+public func +(lhs: URL, rhs: String) -> URL {
+    return lhs.appendingPathComponent(rhs)
 }

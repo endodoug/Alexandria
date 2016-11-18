@@ -1,9 +1,7 @@
 //
-//  SKProduct+Extensions.swift
+//  URLTests.swift
 //
-//  Created by John C. "Hsoi" Daub (john.daub@ovenbits.com, hsoi@hsoienterprises.com) on 2015-03-05.
-//
-//  Extensions to the SKProduct class.
+//  Created by Jonathan Landon on 10/26/16.
 //
 // The MIT License (MIT)
 //
@@ -27,24 +25,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import XCTest
+import Alexandria
 
-import Foundation
-import StoreKit
-
-extension SKProduct {
-
-    /**
-    Returns the product's price, properly localized for display.
+class URLTests: XCTestCase {
     
-    - SeeAlso: Listing 2-3 @ https://developer.apple.com/library/mac/documentation/NetworkingInternet/Conceptual/StoreKitGuide/Chapters/ShowUI.html#//apple_ref/doc/uid/TP40008267-CH3-SW10
-    */
-    public var localizedPrice : String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.formatterBehavior = .behavior10_4
-        numberFormatter.numberStyle = .currency
-        numberFormatter.locale = priceLocale
+    func testStringLiteralInitializer() {
+        let url: URL = "https://github.com/ovenbits"
         
-        return numberFormatter.string(from: price) ?? ""
+        XCTAssert(url.absoluteString == "https://github.com/ovenbits", "Absolute strings are not equal")
+        XCTAssert(url.scheme == "https", "Scheme are not equal")
+        XCTAssert(url.host == "github.com", "Hosts are not equal")
+        XCTAssert(url.path == "/ovenbits", "Paths are not equal")
     }
-
+    
+    func testPathAppendingOperator() {
+        var url: URL = "https://github.com"
+        url = url + "ovenbits"
+        url = url + "Alexandria"
+        
+        XCTAssert(url.path == "/ovenbits/Alexandria", "Paths are not equal")
+    }
+    
 }

@@ -1,7 +1,7 @@
 //
-//  UILabel+Extensions.swift
+//  CharacterSetTests.swift
 //
-//  Created by Jonathan Landon on 1/19/16.
+//  Created by Jonathan Landon on 10/26/16.
 //
 // The MIT License (MIT)
 //
@@ -25,20 +25,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import UIKit
+import XCTest
 
-extension UILabel {
+class CharacterSetTests: XCTestCase {
     
-    /**
-     Constrain self to fit its content for the specified layout constraint axes.
-     
-     - parameter axes: The axes on which to constrain self (variadic).
-     - parameter priority: The layout priority for content hugging and compression (optional, defaults to UILayoutPriorityRequired)
-     */
-    public func constrainSizeToFit(axes: UILayoutConstraintAxis..., priority: UILayoutPriority = UILayoutPriorityRequired) {
-        axes.forEach {
-            setContentHuggingPriority(priority, forAxis: $0)
-            setContentCompressionResistancePriority(priority, forAxis: $0)
-        }
+    func testStringLiteralInitializer() {
+        let set: CharacterSet = "abcdefg"
+        
+        XCTAssert(set.contains("a"), "Character missing from set")
+        XCTAssert(set.contains("d"), "Character missing from set")
+        XCTAssert(!set.contains("h"), "Character should not be in set")
     }
+    
 }

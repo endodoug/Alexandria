@@ -1,9 +1,7 @@
 //
-//  SKProduct+Extensions.swift
+//  Operators.swift
 //
-//  Created by John C. "Hsoi" Daub (john.daub@ovenbits.com, hsoi@hsoienterprises.com) on 2015-03-05.
-//
-//  Extensions to the SKProduct class.
+//  Created by Jonathan Landon on 6/20/16.
 //
 // The MIT License (MIT)
 //
@@ -27,24 +25,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+postfix operator %
 
-import Foundation
-import StoreKit
+public postfix func %(value: CGFloat) -> CGFloat {
+    return value / 100
+}
 
-extension SKProduct {
+public postfix func %(value: Float) -> Float {
+    return value / 100
+}
 
-    /**
-    Returns the product's price, properly localized for display.
-    
-    - SeeAlso: Listing 2-3 @ https://developer.apple.com/library/mac/documentation/NetworkingInternet/Conceptual/StoreKitGuide/Chapters/ShowUI.html#//apple_ref/doc/uid/TP40008267-CH3-SW10
-    */
-    public var localizedPrice : String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.formatterBehavior = .behavior10_4
-        numberFormatter.numberStyle = .currency
-        numberFormatter.locale = priceLocale
-        
-        return numberFormatter.string(from: price) ?? ""
-    }
-
+public postfix func %(value: Double) -> Double {
+    return value / 100
 }
